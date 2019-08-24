@@ -61,15 +61,16 @@ public sealed class GameController : MonoBehaviour
         player.transform.Translate(new Vector2(hori, vert) * movementSpeed * Time.deltaTime);
         player.transform.up = -distance;
 
-        float sqrRad = radius * radius;
-
-        if (distance.sqrMagnitude != sqrRad)
+        if (distance.magnitude > radius)
         {
-            if (distance.sqrMagnitude > sqrRad)
-            {
-                player.transform.position = (Vector2)distance.normalized * radius;
-                player.transform.Translate(new Vector2(hori, 0) * movementSpeed * Time.deltaTime);
-            }
+            // Outside Border
+            player.transform.position = (Vector2)distance.normalized * radius;
+            player.transform.Translate(new Vector2(hori, 0) * movementSpeed * Time.deltaTime);
+        }
+        else if (distance.magnitude < psys.radius)
+        {
+            // Inside
+            player.isUnderground = false;
         }
     }
 }
