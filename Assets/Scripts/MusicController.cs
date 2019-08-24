@@ -7,7 +7,7 @@ public interface IMusicController
 {
     void NextLevel();
     void PrevLevel();
-    int GetCurrentIndex();
+    int GetCurrentLevel();
 }
 
 public class MusicController : MonoBehaviour, IMusicController
@@ -30,7 +30,7 @@ public class MusicController : MonoBehaviour, IMusicController
         CurrentIndex = Mathf.Max(CurrentIndex - 1, 0);
     }
 
-    public int GetCurrentIndex()
+    public int GetCurrentLevel()
     {
         return CurrentIndex;
     }
