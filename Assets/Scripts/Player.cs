@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour {
+public class Player : MonoBehaviour {
 
 #if UNITY_EDITOR
 	new
