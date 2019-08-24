@@ -3,6 +3,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
 
+    public Transform world;
+    
     void Awake()
     {
         // Singleton class
@@ -13,10 +15,12 @@ public class GameManager : MonoBehaviour {
         }
         instance = this;
     }
+
     void Start()
     {
 
     }
+
     void Update()
     {   
         
