@@ -3,6 +3,19 @@
 [DisallowMultipleComponent]
 public sealed class GameController : MonoBehaviour
 {
+    public static GameController instance
+    {
+        get
+        {
+            if (!m_instance)
+            {
+                m_instance = FindObjectOfType<GameController>();
+            }
+            return m_instance;
+        }
+    }
+    static GameController m_instance = null;
+
     PhysicsSystem psys { get { return PhysicsSystem.instance; } }
     public float movementSpeed = 2f;
     public float jumpingVelocity = 0.5f;
@@ -48,20 +61,16 @@ public sealed class GameController : MonoBehaviour
         player.transform.Translate(new Vector2(hori, vert) * movementSpeed * Time.deltaTime);
         player.transform.up = -distance;
 
-        float sqrRad = radius * radius;
-
-        if (distance.sqrMagnitude != sqrRad)
+        if (distance.magnitude > radius)
         {
-            
-
-            if (distance.sqrMagnitude > sqrRad)
-            {
-                player.transform.position = (Vector2)distance.normalized * radius ;
-                player.transform.Translate(new Vector2(hori, 0) * movementSpeed * Time.deltaTime);
-               
-            }
+            // Outside Border
+            player.transform.position = (Vector2)distance.normalized * radius;
+            player.transform.Translate(new Vector2(hori, 0) * movementSpeed * Time.deltaTime);
         }
-
-        //Debug.Log("hori:"+hori+" vert:"+vert);
+        else if (distance.magnitude < psys.radius)
+        {
+            // Inside
+            player.isUnderground = false;
+        }
     }
 }

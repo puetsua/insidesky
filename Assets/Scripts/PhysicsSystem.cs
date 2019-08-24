@@ -17,6 +17,7 @@ public sealed class PhysicsSystem : MonoBehaviour
         }
     }
     static PhysicsSystem m_instance = null;
+    GameController ctrler { get { return GameController.instance; } }
 
     public Transform world;
     public float radius = 3.0f;
@@ -65,6 +66,10 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             physicsObject.velocity.y -= Time.deltaTime * gravity;
         }
+        else if (physicsObject.velocity.y <= 0)
+        {
+            physicsObject.velocity.y = 0;
+        }
         rigidbody.transform.up = -direcion;
         if (distance > radius)
         {
@@ -74,6 +79,11 @@ public sealed class PhysicsSystem : MonoBehaviour
 
     void UpdateUnderground(PhysicsObject physicsObject)
     {
+        if (ctrler.player == physicsObject)
+        {
+            return;
+        }
+
         Rigidbody2D rigid = physicsObject.rigidbody;
         Vector2 dir = (Vector2)world.position - rigid.position;
         float centerDist = dir.magnitude;

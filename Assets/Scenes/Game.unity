@@ -122,7 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 18841723}
   m_Layer: 0
-  m_Name: Rotation0 (4)
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -259,7 +259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 165707622}
   m_Layer: 0
-  m_Name: Rotation0 (2)
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -448,7 +448,7 @@ GameObject:
   m_Component:
   - component: {fileID: 421298131}
   m_Layer: 0
-  m_Name: Rotation0 (7)
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -479,7 +479,7 @@ GameObject:
   m_Component:
   - component: {fileID: 423256368}
   m_Layer: 0
-  m_Name: Rotation0 (3)
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -510,7 +510,7 @@ GameObject:
   m_Component:
   - component: {fileID: 467825430}
   m_Layer: 0
-  m_Name: Rotation0 (1)
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -861,7 +861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe312dbd08352d840bb939ea51e29bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebug: 0
+  isDebug: 1
 --- !u!4 &945225850
 Transform:
   m_ObjectHideFlags: 0
@@ -1383,7 +1383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1332363785}
   m_Layer: 0
-  m_Name: Rotation0
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1496,7 +1496,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1356025342}
   m_Layer: 0
-  m_Name: Rotation0 (8)
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1677,7 +1677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1604756593}
   m_Layer: 0
-  m_Name: Rotation0 (6)
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1723,7 +1723,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1650574364}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4b02fc6261ce5a428a8c07cbbe465e5, type: 3}
   m_Name: 
@@ -1974,7 +1974,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1745071549}
   m_Layer: 0
-  m_Name: Rotation0 (9)
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2084,7 +2084,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2038554713}
   m_Layer: 0
-  m_Name: Rotation0 (5)
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2238,7 +2238,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2057215868}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.43, y: -11.06, z: 0}
+  m_LocalPosition: {x: -0.12, y: -15.86, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1340897754}

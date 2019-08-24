@@ -18,7 +18,7 @@ public class DrawCircle : MonoBehaviour
 
         var segments = 360;
         line = container.GetComponent<LineRenderer>();
-        if (line)
+        if (line && mgr.isDebug)
         {
             line.useWorldSpace = false;
             line.startWidth = lineWidth;
