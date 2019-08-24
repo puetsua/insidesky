@@ -17,6 +17,7 @@ public sealed class PhysicsSystem : MonoBehaviour
         }
     }
     static PhysicsSystem m_instance = null;
+    GameController ctrler { get { return GameController.instance; } }
 
     public Transform world;
     public float radius = 3.0f;
@@ -78,6 +79,11 @@ public sealed class PhysicsSystem : MonoBehaviour
 
     void UpdateUnderground(PhysicsObject physicsObject)
     {
+        if (ctrler.player == physicsObject)
+        {
+            return;
+        }
+
         Rigidbody2D rigid = physicsObject.rigidbody;
         Vector2 dir = (Vector2)world.position - rigid.position;
         float centerDist = dir.magnitude;
