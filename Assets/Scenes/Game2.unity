@@ -809,6 +809,7 @@ GameObject:
   - component: {fileID: 1650574368}
   - component: {fileID: 1650574365}
   - component: {fileID: 1650574366}
+  - component: {fileID: 1650574367}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -923,6 +924,22 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!58 &1650574367
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650574364}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!4 &1650574368
 Transform:
   m_ObjectHideFlags: 0
