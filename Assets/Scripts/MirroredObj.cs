@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MirroredObj : MonoBehaviour
 {
-	PhysicsObjectController mgr { get { return PhysicsObjectController.instance; } }
+	GameManager mgr { get { return GameManager.instance; } }
     GameObject mirrored = null;
     Rigidbody2D rigid2d = null;
 
@@ -16,7 +16,7 @@ public class MirroredObj : MonoBehaviour
             Vector2 pos = transform.localPosition;
             mirrored = Instantiate(this.gameObject, transform.parent);
             mirrored.transform.localPosition = new Vector2(mgr.radius * 2 - pos.x, 0f);
-            mirrored.GetComponent<MirroredObj>().isMirroredObj = true;
+            Destroy(mirrored.GetComponent<MirroredObj>());
         }
 
         rigid2d = GetComponent<Rigidbody2D>();
