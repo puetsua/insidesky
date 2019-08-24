@@ -21,6 +21,7 @@ public sealed class GameController : MonoBehaviour
     public float jumpingVelocity = 0.5f;
     public PhysicsObject player;
     public bool isGrounded;
+    public bool isUnderWorldDisplay = false;
 
     void Update()
     {
@@ -71,6 +72,23 @@ public sealed class GameController : MonoBehaviour
         {
             // Inside
             player.isUnderground = false;
+            /* 
+            if(!isUnderWorldDisplay)
+            {
+                
+                
+                PhysicsObject[] objs = Resources.FindObjectsOfTypeAll<PhysicsObject>();
+                for (int i = 0; i < objs.Length; ++i)
+                {
+                    if(objs)
+                        objs[i].gameObject.SetActive(false);
+                        Debug.Log("objs "+objs.Length);
+                }
+            }
+            */
+                
+        }else{
+
         }
     }
 }
