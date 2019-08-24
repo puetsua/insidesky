@@ -1,14 +1,16 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
     public static GameManager instance = null;
 
     public Transform world;
-    
+    public float worldRadius = 3f;
+
     void Awake()
     {
         // Singleton class
-        if(instance != null)
+        if (instance != null)
         {
             Destroy(instance);
             return;
@@ -22,7 +24,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void Update()
-    {   
-        
+    {
+
     }
 }
