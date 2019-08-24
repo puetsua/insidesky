@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MirroredObj : MonoBehaviour
 {
-	PhysicsObjectController mgr { get { return PhysicsObjectController.instance; } }
+	GameManager mgr { get { return GameManager.instance; } }
     GameObject mirrored = null;
     Rigidbody2D rigid2d = null;
 
