@@ -4,7 +4,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Rigidbody2D))]
 public sealed class PhysicsObject : MonoBehaviour {
-
+	GameManager mgr { get { return GameManager.instance; } }
 	public Vector2 velocity = Vector2.zero;
 
 #if UNITY_EDITOR
@@ -22,7 +22,7 @@ public sealed class PhysicsObject : MonoBehaviour {
 	
 	public bool isGrounded {
 		get {
-			PhysicsObjectController instance = PhysicsObjectController.instance;
+			GameManager instance = GameManager.instance;
 			Vector2 distance = instance.transform.position - transform.position;
 			if (Mathf.Abs(distance.sqrMagnitude - instance.radius * instance.radius) <= instance.groundedDistanceThreshold) {
 				return true;
@@ -62,6 +62,10 @@ public sealed class PhysicsObject : MonoBehaviour {
 				return;
 			}
 		}
+	}
+
+	void Awake() {
+		mgr.physicsObjects.Add(this);
 	}
 
 	List<Collision2D> collisions = new List<Collision2D>();
