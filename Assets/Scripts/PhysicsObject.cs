@@ -30,8 +30,6 @@ public sealed class PhysicsObject : MonoBehaviour {
 			for (int i = 0; i < collisions.Count; ++i) {
 				ContactPoint2D[] contacts = collisions[i].contacts;
 				for (int j = 0; j < contacts.Length; ++j) {
-					Debug.DrawRay(rigidbody.position, contacts[j].normal);
-					Debug.DrawRay(rigidbody.position, distance);
 					if (Vector2.Angle(distance, contacts[j].normal) <= instance.groundedAngleThreshold) {
 						return true;
 					}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -23,7 +24,7 @@ public sealed class GameManager : MonoBehaviour
     public float groundedDistanceThreshold = 0.01f;
     public float groundedAngleThreshold = 30f;
 
-    [HideInInspector]
+    [NonSerialized]
     public List<PhysicsObject> physicsObjects = new List<PhysicsObject>();
 
     void FixedUpdate()
@@ -37,17 +38,19 @@ public sealed class GameManager : MonoBehaviour
     void UpdateObject(PhysicsObject physicsObject)
     {
         Rigidbody2D rigidbody = physicsObject.rigidbody;
-        Vector2 distance = (Vector2)world.position - rigidbody.position;
-        rigidbody.position += ((Vector2)Vector3.Cross(distance, Vector3.forward) * physicsObject.velocity.x + distance.normalized * radius * physicsObject.velocity.y) * Time.fixedDeltaTime;
-        distance = rigidbody.position - (Vector2)world.position;
+		rigidbody.velocity = Vector2.zero;
+        Vector2 direcion = (Vector2)world.position - rigidbody.position;
+		float distance = direcion.magnitude;
+		rigidbody.position += ((Vector2)Vector3.Cross(direcion, Vector3.forward) * physicsObject.velocity.x * (distance / radius) + direcion.normalized * radius * physicsObject.velocity.y) * Time.fixedDeltaTime;
+		direcion = rigidbody.position - (Vector2)world.position;
         if (!physicsObject.isGrounded)
         {
             physicsObject.velocity.y -= Time.deltaTime * gravity;
         }
-        rigidbody.transform.up = -distance;
-        if (distance.sqrMagnitude > radius * radius)
+		rigidbody.transform.up = -direcion;
+		if (distance > radius)
         {
-            rigidbody.position = distance.normalized * radius;
+			rigidbody.position = direcion.normalized * radius;
         }
     }
 }
