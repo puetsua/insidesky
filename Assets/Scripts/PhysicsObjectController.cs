@@ -13,6 +13,7 @@ public sealed class PhysicsObjectController : MonoBehaviour {
 	}
 	static PhysicsObjectController m_instance = null;
 
+	public Transform root;
 	public float radius;
 	public float gravity;
 	public float groundedDistanceThreshold;
@@ -28,9 +29,9 @@ public sealed class PhysicsObjectController : MonoBehaviour {
 
 	void UpdateObject(PhysicsObject physicsObject) {
 		Rigidbody2D rigidbody = physicsObject.rigidbody;
-		Vector2 distance = (Vector2)transform.position - rigidbody.position;
+		Vector2 distance = (Vector2)root.position - rigidbody.position;
 		rigidbody.position += ((Vector2)Vector3.Cross(distance, Vector3.forward) * physicsObject.velocity.x + distance.normalized * radius * physicsObject.velocity.y)* Time.fixedDeltaTime;
-		distance = rigidbody.position - (Vector2)transform.position;
+		distance = rigidbody.position - (Vector2)root.position;
 		if (!physicsObject.isGrounded) {
 			physicsObject.velocity.y -= Time.deltaTime * gravity;
 		}
