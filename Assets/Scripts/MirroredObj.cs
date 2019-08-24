@@ -16,7 +16,7 @@ public class MirroredObj : MonoBehaviour
             Vector2 pos = transform.localPosition;
             mirrored = Instantiate(this.gameObject, transform.parent);
             mirrored.transform.localPosition = new Vector2(mgr.radius * 2 - pos.x, 0f);
-            mirrored.GetComponent<MirroredObj>().isMirroredObj = true;
+            Destroy(mirrored.GetComponent<MirroredObj>());
         }
 
         rigid2d = GetComponent<Rigidbody2D>();
