@@ -19,4 +19,30 @@ public sealed class GameManager : MonoBehaviour
     static GameManager m_instance = null;
 
     public bool isDebug = false;
+    public LineRenderer debugLineRenderer = null;
+
+    public void DrawCircle(GameObject container, float radius, float lineWidth)
+    {
+        var segments = 360;
+        if (debugLineRenderer && isDebug)
+        {
+            LineRenderer line = Instantiate(debugLineRenderer, container.transform);
+
+            line.useWorldSpace = false;
+            line.startWidth = lineWidth;
+            line.endWidth = lineWidth;
+            line.positionCount = segments + 1;
+
+            var pointCount = segments + 1; // add extra point to make startpoint and endpoint the same to close the circle
+            var points = new Vector3[pointCount];
+
+            for (int i = 0; i < pointCount; i++)
+            {
+                var rad = Mathf.Deg2Rad * (i * 360f / segments);
+                points[i] = new Vector3(Mathf.Sin(rad) * radius, Mathf.Cos(rad) * radius, 0f);
+            }
+
+            line.SetPositions(points);
+        }
+    }
 }

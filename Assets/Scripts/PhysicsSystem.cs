@@ -17,6 +17,7 @@ public sealed class PhysicsSystem : MonoBehaviour
         }
     }
     static PhysicsSystem m_instance = null;
+    GameManager mgr { get { return GameManager.instance; } }
     GameController ctrler { get { return GameController.instance; } }
 
     public Transform world;
@@ -37,6 +38,12 @@ public sealed class PhysicsSystem : MonoBehaviour
     public float Dist2Center(Transform obj)
     {
         return Vector2.Distance(world.position, obj.position);
+    }
+
+    void Start()
+    {
+        mgr.DrawCircle(this.gameObject, radius, 0.1f);
+        mgr.DrawCircle(this.gameObject, radius + undergroundDepth, 0.1f);
     }
 
     void FixedUpdate()
@@ -96,5 +103,11 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             rigid.MovePosition(-dir * radius);
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        GizmosDraw.Debug.Circle(world.transform.position, radius, Color.red);
+        GizmosDraw.Debug.Circle(world.transform.position, radius + undergroundDepth, Color.magenta);
     }
 }

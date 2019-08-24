@@ -21,10 +21,12 @@ public class MirroredObj : MonoBehaviour
             mirrored = Instantiate(this.gameObject, transform.parent);
             var mirrorComp = mirrored.GetComponent<MirroredObj>();
             var mirrorPhys = mirrored.GetComponent<PhysicsObject>();
+            var mirrorRigid = mirrored.GetComponent<Rigidbody2D>();
             if (mirrorPhys)
             {
                 // inverted state
                 mirrorPhys.isUnderground = !mirrorPhys.isUnderground;
+                mirrorRigid.bodyType = RigidbodyType2D.Kinematic;
             }
             mirrored.transform.localPosition = inwardDir * (psys.radius * 2 - psys.Dist2Center(transform));
             mirrorComp.enabled = false;
