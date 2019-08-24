@@ -65,6 +65,10 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             physicsObject.velocity.y -= Time.deltaTime * gravity;
         }
+        else if (physicsObject.velocity.y <= 0)
+        {
+            physicsObject.velocity.y = 0;
+        }
         rigidbody.transform.up = -direcion;
         if (distance > radius)
         {
