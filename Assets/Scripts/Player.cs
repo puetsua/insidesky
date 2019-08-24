@@ -28,6 +28,12 @@ public class Player : MonoBehaviour {
 			}
 		}
 		rigidbody.transform.up = -distance;
+		if (Input.GetKeyDown(KeyCode.Space)) {
+			m_jumpVelocity = 1f;
+		}
+		if (m_jumpVelocity > 0f) {
+			m_jumpVelocity -= gravity * Time.fixedDeltaTime;
+		}
 	}
 
 	float m_radius = 3f;
