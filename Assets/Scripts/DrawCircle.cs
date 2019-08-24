@@ -5,13 +5,15 @@ using UnityEngine;
 public class DrawCircle : MonoBehaviour
 {
     GameManager mgr { get { return GameManager.instance; } }
+    PhysicsSystem psys { get { return PhysicsSystem.instance; } }
+
     LineRenderer line = null;
 
     // Start is called before the first frame update
     void Start()
     {
         GameObject container = this.gameObject;
-        float radius = mgr.radius;
+        float radius = psys.radius;
         float lineWidth = 0.05f;
 
         var segments = 360;
