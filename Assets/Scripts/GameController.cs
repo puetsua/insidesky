@@ -52,10 +52,16 @@ public sealed class GameController : MonoBehaviour
 
         if (distance.sqrMagnitude != sqrRad)
         {
+            
+
             if (distance.sqrMagnitude > sqrRad)
             {
-                player.transform.position = distance.normalized * radius;
+                player.transform.position = (Vector2)distance.normalized * radius ;
+                player.transform.Translate(new Vector2(hori, 0) * movementSpeed * Time.deltaTime);
+               
             }
         }
+
+        //Debug.Log("hori:"+hori+" vert:"+vert);
     }
 }
