@@ -9,7 +9,7 @@ public class Player_2 : MonoBehaviour
     public Rigidbody2D rigidbody;
     public float gravity = .5f;
 	public float speed = 2f;
-    public float m_radius = 15f;
+    public float m_radius = 4f;
 
     // Start is called before the first frame update
     void Start()
@@ -28,18 +28,14 @@ public class Player_2 : MonoBehaviour
         rigidbody.transform.up = -distance;
 
         float sqrRad = m_radius * m_radius;
-        //rigidbody.position -= distance.normalized * m_radius * Time.deltaTime;
 
         if (distance.sqrMagnitude != sqrRad)
         {
             if (distance.sqrMagnitude > sqrRad)
             {
-                rigidbody.position = distance.normalized * m_radius;
+                transform.position = distance.normalized * m_radius;
             }
-            else
-            {
-                
-            }
+
         }
 
         
