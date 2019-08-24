@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MirroredObj : MonoBehaviour
 {
-	GameManager mgr { get { return GameManager.instance; } }
+    GameManager mgr { get { return GameManager.instance; } }
     PhysicsSystem psys { get { return PhysicsSystem.instance; } }
 
     GameObject mirrored = null;
@@ -15,10 +15,20 @@ public class MirroredObj : MonoBehaviour
     {
         if (!isMirroredObj)
         {
-            // Vector2 pos = transform.localPosition;
-            // mirrored = Instantiate(this.gameObject, transform.parent);
-            // mirrored.transform.localPosition = new Vector2(psys.radius * 2 - pos.x, 0f);
-            // Destroy(mirrored.GetComponent<MirroredObj>());
+            Vector2 pos = transform.localPosition;
+            Vector2 inwardDir = psys.TowardCenter(transform);
+
+            mirrored = Instantiate(this.gameObject, transform.parent);
+            var mirrorComp = mirrored.GetComponent<MirroredObj>();
+            var mirrorPhys = mirrored.GetComponent<PhysicsObject>();
+            if (mirrorPhys)
+            {
+                // inverted state
+                mirrorPhys.isUnderground = !mirrorPhys.isUnderground;
+            }
+            mirrored.transform.localPosition = inwardDir * (psys.radius * 2 - psys.Dist2Center(transform));
+            mirrorComp.enabled = false;
+            Destroy(mirrorComp);
         }
 
         rigid2d = GetComponent<Rigidbody2D>();
@@ -34,8 +44,8 @@ public class MirroredObj : MonoBehaviour
         if (mirrored)
         {
             // Mirrored rigidbody position
-            Vector2 pos = transform.localPosition;
-            mirrored.transform.localPosition = new Vector2(psys.radius * 2 - pos.x, 0f);
+            Vector2 inwardDir = psys.TowardCenter(transform);
+            mirrored.transform.localPosition = inwardDir * (psys.radius * 2 - psys.Dist2Center(transform));
         }
     }
 }
