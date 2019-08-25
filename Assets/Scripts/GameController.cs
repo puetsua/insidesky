@@ -142,7 +142,7 @@ public sealed class GameController : MonoBehaviour
         if (playerAnim)
         {
             // Feed information to animator
-            Vector2 playerSpeed = player.physicsObject.rigidbody.velocity;
+            Vector2 playerSpeed = player.physicsObject.velocity;
             playerAnim.SetFloat("Speed_X", Mathf.Abs(Vector2.Dot(playerSpeed, player.transform.up)));
             playerAnim.SetFloat("Speed_Y", Vector2.Dot(playerSpeed, player.transform.right));
             playerAnim.SetInteger("State", State2IntMapping(currentState));
