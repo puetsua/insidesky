@@ -93,14 +93,19 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             rigidbody.position = direcion.normalized * radius;
         }
+
+        var render = physicsObject.GetComponent<Renderer>();
+        if(render == null)
+        {
+            render = physicsObject.GetComponentInChildren<Renderer>();
+        }
         if (ctrler.player.physicsObject.isUnderground)
         {
-            physicsObject.GetComponent<Renderer>().enabled = false;
+            render.enabled = false;
         }
         else
         {
-
-            physicsObject.GetComponent<Renderer>().enabled = true;
+            render.enabled = true;
         }
     }
 
@@ -123,14 +128,19 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             rigid.MovePosition(-dir * radius);
         }
+
+        var render = physicsObject.GetComponent<Renderer>();
+        if(render == null)
+        {
+            render = physicsObject.GetComponentInChildren<Renderer>();
+        }
         if (ctrler.player.physicsObject.isUnderground)
         {
-            physicsObject.GetComponent<Renderer>().enabled = true;
+            render.enabled = true;
         }
         else
         {
-
-            physicsObject.GetComponent<Renderer>().enabled = false;
+            render.enabled = false;
         }
     }
 
