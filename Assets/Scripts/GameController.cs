@@ -23,6 +23,8 @@ public sealed class GameController : MonoBehaviour
     public float jumpingVelocity = 0.5f;
     public PhysicsObject player;
 
+    Animator playerAnim = null;
+
     enum PlayerState
     {
         OnGround,
@@ -30,6 +32,20 @@ public sealed class GameController : MonoBehaviour
         InSky
     }
     PlayerState currentState = PlayerState.OnGround;
+
+    int State2IntMapping(PlayerState state)
+    {
+        switch (state)
+        {
+            case PlayerState.InUnderground:
+                return 0;
+            case PlayerState.OnGround:
+                return 1;
+            case PlayerState.InSky:
+                return 2;
+        }
+        return -1;
+    }
 
     void SwitchPlayerState(PlayerState state)
     {
@@ -54,15 +70,41 @@ public sealed class GameController : MonoBehaviour
         }
 
         currentState = state;
+        Debug.LogFormat("Changed state to {0}", currentState);
+    }
+
+    void Start()
+    {
+        playerAnim = player.GetComponent<Animator>();
     }
 
     void Update()
     {
+        float hori = Input.GetAxis("Horizontal");
         float vert = Input.GetAxis("Vertical");
         if (player.isGrounded && vert < 0)
         {
             // Player wants to go underground
             SwitchPlayerState(PlayerState.InUnderground);
+        }
+
+        // Flip player when moving different direction.
+        if (hori < 0)
+        {
+            player.transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+        else if (hori > 0)
+        {
+            player.transform.localScale = new Vector3(-1f, 1f, 1f);
+        }
+
+        if (playerAnim)
+        {
+            // Feed information to animator
+            Vector2 playerSpeed = player.rigidbody.velocity;
+            playerAnim.SetFloat("Speed_X", Vector2.Dot(playerSpeed, player.transform.up));
+            playerAnim.SetFloat("Speed_Y", Vector2.Dot(playerSpeed, player.transform.right));
+            playerAnim.SetInteger("State", State2IntMapping(currentState));
         }
 
         switch (currentState)
