@@ -8,8 +8,16 @@ public sealed class PhysicsObject : MonoBehaviour
     PhysicsSystem psys { get { return PhysicsSystem.instance; } }
     public Vector2 velocity = Vector2.zero;
 
-    [HideInInspector]
-    public bool isUnderground = false;
+    public enum Dimension
+    {
+        Ground,
+        Underground,
+        Sky
+    }
+    public Dimension dimension = Dimension.Ground;
+    public bool isInGround { get { return dimension == Dimension.Ground; } }
+    public bool isUnderground { get { return dimension == Dimension.Underground; } }
+    public bool isInSky { get { return dimension == Dimension.Sky; } }
 
 #if UNITY_EDITOR
     new
@@ -49,6 +57,11 @@ public sealed class PhysicsObject : MonoBehaviour
             }
             return false;
         }
+    }
+
+    public void SetDimension(Dimension dim)
+    {
+        dimension = dim;
     }
 
     void OnCollisionEnter2D(Collision2D collision)

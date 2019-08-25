@@ -72,27 +72,37 @@ public sealed class GameController : MonoBehaviour
             return;
         }
 
-        if(!HasJumpAbility && state == PlayerState.InSky)
+        if (!HasJumpAbility && state == PlayerState.InSky)
         {
             return;
         }
 
-        if(!HasDigAbility && state == PlayerState.InUnderground)
+        if (!HasDigAbility && state == PlayerState.InUnderground)
         {
             return;
         }
+
+        int layerPlayer = LayerMask.NameToLayer("Player");
+        int layerSky = LayerMask.NameToLayer("Sky");
+        int layerGround = LayerMask.NameToLayer("Default");
+
+        Physics2D.IgnoreLayerCollision(layerPlayer, layerSky, false);
+        Physics2D.IgnoreLayerCollision(layerPlayer, layerGround, false);
 
         switch (state)
         {
             case PlayerState.OnGround:
-                player.isUnderground = false;
+                player.SetDimension(PhysicsObject.Dimension.Ground);
+                Physics2D.IgnoreLayerCollision(layerPlayer, layerSky, true);
                 mgr.onPlayerOnGround.Invoke();
                 break;
             case PlayerState.InUnderground:
-                player.isUnderground = true;
+                player.SetDimension(PhysicsObject.Dimension.Underground);
                 mgr.onPlayerUnderground.Invoke();
                 break;
             case PlayerState.InSky:
+                player.SetDimension(PhysicsObject.Dimension.Sky);
+                Physics2D.IgnoreLayerCollision(layerPlayer, layerGround, true);
                 mgr.onPlayerInSky.Invoke();
                 break;
         }

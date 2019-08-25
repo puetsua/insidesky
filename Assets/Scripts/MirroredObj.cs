@@ -25,7 +25,14 @@ public class MirroredObj : MonoBehaviour
             if (mirrorPhys)
             {
                 // inverted state
-                mirrorPhys.isUnderground = !mirrorPhys.isUnderground;
+                if(mirrorPhys.isUnderground)
+                {
+                    mirrorPhys.SetDimension(PhysicsObject.Dimension.Ground);
+                }
+                else if(mirrorPhys.isInGround)
+                {
+                    mirrorPhys.SetDimension(PhysicsObject.Dimension.Underground);
+                }
                 mirrorRigid.bodyType = RigidbodyType2D.Kinematic;
             }
             mirrored.transform.localPosition = inwardDir * (psys.radius * 2 - psys.Dist2Center(transform));
