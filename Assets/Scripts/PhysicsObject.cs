@@ -8,7 +8,7 @@ public sealed class PhysicsObject : MonoBehaviour
     PhysicsSystem psys { get { return PhysicsSystem.instance; } }
     public Vector2 velocity = Vector2.zero;
 
-    // [HideInInspector]
+    [HideInInspector]
     public bool isUnderground = false;
 
 #if UNITY_EDITOR
@@ -32,7 +32,7 @@ public sealed class PhysicsObject : MonoBehaviour
         get
         {
             Vector2 distance = psys.transform.position - transform.position;
-            if (Mathf.Abs(distance.sqrMagnitude - psys.radius * psys.radius) <= psys.groundedDistanceThreshold)
+            if (psys.radius - distance.magnitude <= psys.groundedDistanceThreshold)
             {
                 return true;
             }
