@@ -17,13 +17,11 @@ public sealed class GameController : MonoBehaviour
     }
     static GameController m_instance = null;
 
+    GameManager mgr { get { return GameManager.instance; } }
     PhysicsSystem psys { get { return PhysicsSystem.instance; } }
     public float movementSpeed = 2f;
     public float jumpingVelocity = 0.5f;
     public PhysicsObject player;
-    public UnityEvent onPlayerInSky = new UnityEvent();
-    public UnityEvent onPlayerOnGround = new UnityEvent();
-    public UnityEvent onPlayerUnderground = new UnityEvent();
 
     enum PlayerState
     {
@@ -44,14 +42,14 @@ public sealed class GameController : MonoBehaviour
         {
             case PlayerState.OnGround:
                 player.isUnderground = false;
-                onPlayerOnGround.Invoke();
+                mgr.onPlayerOnGround.Invoke();
                 break;
             case PlayerState.InUnderground:
                 player.isUnderground = true;
-                onPlayerUnderground.Invoke();
+                mgr.onPlayerUnderground.Invoke();
                 break;
             case PlayerState.InSky:
-                onPlayerInSky.Invoke();
+                mgr.onPlayerInSky.Invoke();
                 break;
         }
 
