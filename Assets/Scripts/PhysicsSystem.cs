@@ -82,6 +82,13 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             rigidbody.position = direcion.normalized * radius;
         }
+        if(ctrler.player.isUnderground){
+            
+            physicsObject.GetComponent<Renderer>().enabled = false;
+        }else{
+            
+            physicsObject.GetComponent<Renderer>().enabled = true;
+        }
     }
 
     void UpdateUnderground(PhysicsObject physicsObject)
@@ -103,6 +110,15 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             rigid.MovePosition(-dir * radius);
         }
+        if(ctrler.player.isUnderground){
+            
+            physicsObject.GetComponent<Renderer>().enabled = true;
+        }else{
+            
+            physicsObject.GetComponent<Renderer>().enabled = false;
+        }
+
+
     }
 
     void OnDrawGizmos()
