@@ -20,7 +20,7 @@ public sealed class PhysicsObject : MonoBehaviour
     public bool isInSky { get { return dimension == Dimension.Sky; } }
 
 #if UNITY_EDITOR
-	void OnEnable() {}
+    void OnEnable() { }
 
     new
 #endif
@@ -36,6 +36,35 @@ public sealed class PhysicsObject : MonoBehaviour
         }
     }
     Rigidbody2D m_rigidbody = null;
+
+    public bool isGroundedExceptSkyblock
+    {
+        get
+        {
+            Vector2 distance = psys.transform.position - transform.position;
+            if (psys.radius - distance.magnitude <= psys.groundedDistanceThreshold)
+            {
+                return true;
+            }
+            for (int i = 0; i < collisions.Count; ++i)
+            {
+                if (LayerMask.LayerToName(collisions[i].gameObject.layer) == "Sky")
+                {
+                    continue;
+                }
+
+                ContactPoint2D[] contacts = collisions[i].contacts;
+                for (int j = 0; j < contacts.Length; ++j)
+                {
+                    if (Vector2.Angle(distance, contacts[j].normal) <= psys.groundedAngleThreshold)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
 
     public bool isGrounded
     {

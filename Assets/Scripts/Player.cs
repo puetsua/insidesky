@@ -6,6 +6,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 	public bool isAbleToJump = false;
+	public bool isAbleToDig = false;
+
 	public Collider2D pivot;
 	public PhysicsObject physicsObject {
 		get {
