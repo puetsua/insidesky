@@ -210,9 +210,13 @@ public sealed class GameController : MonoBehaviour
 
     void UpdateSky()
     {
+        float vert = Input.GetAxis("Vertical");
+
         player.physicsObject.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
-        if (player.physicsObject.isGroundedExceptSkyblock)
+
+        if (player.physicsObject.isGroundedExceptSkyblock || vert < 0)
         {
+            // touch ground or player wants go to ground world.
             SwitchPlayerState(PlayerState.OnGround);
         }
 
