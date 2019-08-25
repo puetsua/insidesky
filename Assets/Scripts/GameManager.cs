@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [DisallowMultipleComponent]
 public sealed class GameManager : MonoBehaviour
@@ -18,8 +19,14 @@ public sealed class GameManager : MonoBehaviour
     }
     static GameManager m_instance = null;
 
+    public MusicController musicCtrl { get { return MusicController.instance; } }
+    public PhysicsSystem phyCtrl { get { return PhysicsSystem.instance; } }
+
     public bool isDebug = false;
     public LineRenderer debugLineRenderer = null;
+    public UnityEvent onPlayerInSky = new UnityEvent();
+    public UnityEvent onPlayerOnGround = new UnityEvent();
+    public UnityEvent onPlayerUnderground = new UnityEvent();
 
     public void DrawCircle(GameObject container, float radius, float lineWidth)
     {

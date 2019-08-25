@@ -12,17 +12,31 @@ public interface IMusicController
 
 public class MusicController : MonoBehaviour, IMusicController
 {
+    public static MusicController instance
+    {
+        get
+        {
+            if (!m_instance)
+            {
+                m_instance = FindObjectOfType<MusicController>();
+            }
+            return m_instance;
+        }
+    }
+    static MusicController m_instance = null;
+
+    GameManager mgr { get { return GameManager.instance; } }
+
     [SerializeField]
-    AudioClip[] musicClips;
+    AudioClip[] musicClips = new AudioClip[0];
     [SerializeField, Range(0.01f, 2f)]
     float trainsitionSpeed = 1;
-    
-    List<AudioSource> audioSources = new List<AudioSource>();
 
+    List<AudioSource> audioSources = new List<AudioSource>();
 
     public void NextLevel()
     {
-        CurrentIndex = Mathf.Min(CurrentIndex + 1, musicClips.Length);
+        CurrentIndex = Mathf.Min(CurrentIndex + 1, musicClips.Length - 1);
     }
 
     public void PrevLevel()
@@ -37,7 +51,7 @@ public class MusicController : MonoBehaviour, IMusicController
 
     public int CurrentIndex
     {
-        get; 
+        get;
         private set;
     }
 
@@ -45,13 +59,13 @@ public class MusicController : MonoBehaviour, IMusicController
     {
         CurrentIndex = 0;
 
-        if(musicClips.Length == 0)
+        if (musicClips.Length == 0)
         {
             Debug.Log("Music Controller need audio clip");
             this.enabled = false;
         }
 
-        foreach(var musicClip in musicClips)
+        foreach (var musicClip in musicClips)
         {
             var audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.clip = musicClip;
@@ -61,17 +75,30 @@ public class MusicController : MonoBehaviour, IMusicController
             audioSource.Play();
             audioSources.Add(audioSource);
         }
+
+        mgr.onPlayerOnGround.AddListener(() =>
+        {
+            CurrentIndex = 1;
+        });
+        mgr.onPlayerUnderground.AddListener(() =>
+        {
+            CurrentIndex = 0;
+        });
+        mgr.onPlayerInSky.AddListener(() =>
+        {
+            CurrentIndex = 2;
+        });
     }
 
     void Update()
     {
         DebugHandler();
-        
-        for(int i = 0; i < audioSources.Count; i++)
+
+        for (int i = 0; i < audioSources.Count; i++)
         {
             var audioSource = audioSources[i];
 
-            if(i == CurrentIndex)
+            if (i == CurrentIndex)
             {
                 audioSource.volume = Mathf.Lerp(audioSource.volume, 1, Time.deltaTime * trainsitionSpeed);
                 audioSource.volume = Mathf.Ceil(audioSource.volume * 1000) / 1000;
@@ -81,19 +108,26 @@ public class MusicController : MonoBehaviour, IMusicController
                 audioSource.volume = Mathf.Lerp(audioSource.volume, 0, Time.deltaTime * trainsitionSpeed);
                 audioSource.volume = Mathf.Floor(audioSource.volume * 1000) / 1000;
             }
-
         }
-        
     }
 
     void DebugHandler()
     {
-        #if MUSIC_CONTROLLER_DEBUG
-            if(Input.GetKeyDown(KeyCode.F7))
-                PrevLevel();
-            
-            if(Input.GetKeyDown(KeyCode.F8))
-                NextLevel();
-        #endif
+        if (!mgr.isDebug)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F7))
+        {
+            PrevLevel();
+            Debug.Log("Previous level, index: " + CurrentIndex);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            NextLevel();
+            Debug.Log("Next level, index: " + CurrentIndex);
+        }
     }
 }
