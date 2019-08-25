@@ -23,6 +23,8 @@ public sealed class GameController : MonoBehaviour
     public Vector2 undergroundSpeed = new Vector2(3f, 4f);
     public float jumpingVelocity = 0.5f;
     public PhysicsObject player;
+    public bool HasJumpAbility = false;
+    public bool HasDigAbility = false;
 
     Animator playerAnim = null;
 
@@ -39,12 +41,12 @@ public sealed class GameController : MonoBehaviour
         switch (type)
         {
             case AbilityStar.Type.Jump:
-                // TODO
+                HasJumpAbility = true;
                 Debug.Log("Got jump ability.");
                 break;
             case AbilityStar.Type.Dig:
-                // TODO
-                Debug.Log("Got jump ability.");
+                HasDigAbility = true;
+                Debug.Log("Got dig ability.");
                 break;
         }
     }
@@ -66,6 +68,16 @@ public sealed class GameController : MonoBehaviour
     void SwitchPlayerState(PlayerState state)
     {
         if (currentState == state)
+        {
+            return;
+        }
+
+        if(!HasJumpAbility && state == PlayerState.InSky)
+        {
+            return;
+        }
+
+        if(!HasDigAbility && state == PlayerState.InUnderground)
         {
             return;
         }
@@ -142,7 +154,7 @@ public sealed class GameController : MonoBehaviour
         player.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
         if (player.isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (HasJumpAbility && Input.GetKeyDown(KeyCode.Space))
             {
                 player.velocity.y = jumpingVelocity;
             }
@@ -155,7 +167,6 @@ public sealed class GameController : MonoBehaviour
 
     void UpdateSky()
     {
-        // TODO
         player.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
         if (player.isGrounded)
         {
