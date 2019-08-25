@@ -76,17 +76,17 @@ public class MusicController : MonoBehaviour, IMusicController
             audioSources.Add(audioSource);
         }
 
-        mgr.onPlayerOnGround.AddListener(() =>
+        mgr.onJumpGet.AddListener(() =>
         {
             CurrentIndex = 1;
         });
-        mgr.onPlayerUnderground.AddListener(() =>
-        {
-            CurrentIndex = 0;
-        });
-        mgr.onPlayerInSky.AddListener(() =>
+        mgr.onDigGet.AddListener(() =>
         {
             CurrentIndex = 2;
+        });
+        mgr.onWinning.AddListener(() =>
+        {
+            CurrentIndex = 3;
         });
     }
 

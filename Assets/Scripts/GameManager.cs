@@ -31,9 +31,12 @@ public sealed class GameManager : MonoBehaviour
     public UnityEvent onPlayerInSky = new UnityEvent();
     public UnityEvent onPlayerOnGround = new UnityEvent();
     public UnityEvent onPlayerUnderground = new UnityEvent();
+    public UnityEvent onJumpGet = new UnityEvent();
+    public UnityEvent onDigGet = new UnityEvent();
+    public UnityEvent onWinning = new UnityEvent();
 
     float nextSceneTimer = 0;
-    float nextSceneTime = 0.2f;
+    float nextSceneTime = 5f;
 
     public void DrawCircle(GameObject container, float radius, float lineWidth, Color color)
     {
@@ -77,7 +80,7 @@ public sealed class GameManager : MonoBehaviour
     {
         if (nextSceneTimer > 0) // Player has won the game.
         {
-            nextSceneTimer -= Time.deltaTime;
+            nextSceneTimer -= Time.unscaledDeltaTime;
             if (nextSceneTimer <= 0)
             {
                 Scene scene = SceneManager.GetActiveScene();
@@ -92,6 +95,7 @@ public sealed class GameManager : MonoBehaviour
                 Debug.Log("Player WIN!");
                 Time.timeScale = 0.1f;
                 nextSceneTimer = nextSceneTime;
+                onWinning.Invoke();
             }
         }
     }

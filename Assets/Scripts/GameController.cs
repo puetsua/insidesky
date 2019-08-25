@@ -40,10 +40,12 @@ public sealed class GameController : MonoBehaviour
         {
             case AbilityStar.Type.Jump:
                 player.isAbleToJump = true;
+                mgr.onJumpGet.Invoke();
                 Debug.Log("Got jump ability.");
                 break;
             case AbilityStar.Type.Dig:
                 player.isAbleToDig = true;
+                mgr.onDigGet.Invoke();
                 Debug.Log("Got dig ability.");
                 break;
         }
