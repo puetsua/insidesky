@@ -20,7 +20,9 @@ public sealed class GameController : MonoBehaviour
     GameManager mgr { get { return GameManager.instance; } }
     PhysicsSystem psys { get { return PhysicsSystem.instance; } }
     public float movementSpeed = 2f;
+    public float climbingSpeed = .2f;
     public Vector2 undergroundSpeed = new Vector2(3f, 4f);
+    public AudioSource jumpSound;
     public float jumpingVelocity = 0.5f;
     public Player player;
 
@@ -196,6 +198,7 @@ public sealed class GameController : MonoBehaviour
 
             if (player.isAbleToJump && !player.joint.enabled && Input.GetButtonDown("Jump"))
             {
+				jumpSound.Play();
                 player.physicsObject.velocity.y = jumpingVelocity;
                 SwitchPlayerState(PlayerState.InSky);
             }
@@ -224,6 +227,7 @@ public sealed class GameController : MonoBehaviour
         {
             if (player.isAbleToJump && !player.joint.enabled && Input.GetButtonDown("Jump"))
             {
+				jumpSound.Play();
                 player.physicsObject.velocity.y = jumpingVelocity;
             }
         }
@@ -260,7 +264,7 @@ public sealed class GameController : MonoBehaviour
     {
         if (player.isOnLadder)
         {
-            player.physicsObject.velocity.y = movementSpeed * 3 * Input.GetAxis("Vertical") * Time.deltaTime;
+			player.physicsObject.velocity.y = climbingSpeed * Input.GetAxis("Vertical");
         }
     }
 }

@@ -100,7 +100,7 @@ public class MusicController : MonoBehaviour, IMusicController
 
             if (i == CurrentIndex)
             {
-                audioSource.volume = Mathf.Lerp(audioSource.volume, 1, Time.deltaTime * trainsitionSpeed);
+                audioSource.volume = Mathf.Lerp(audioSource.volume, .5f, Time.deltaTime * trainsitionSpeed);
                 audioSource.volume = Mathf.Ceil(audioSource.volume * 1000) / 1000;
             }
             else
