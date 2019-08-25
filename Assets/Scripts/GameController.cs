@@ -22,7 +22,7 @@ public sealed class GameController : MonoBehaviour
     public float movementSpeed = 2f;
     public Vector2 undergroundSpeed = new Vector2(3f, 4f);
     public float jumpingVelocity = 0.5f;
-    public PhysicsObject player;
+    public Player player;
 
     Animator playerAnim = null;
 
@@ -39,12 +39,12 @@ public sealed class GameController : MonoBehaviour
         switch (type)
         {
             case AbilityStar.Type.Jump:
-                // TODO
+                player.isAbleToJump = true;
                 Debug.Log("Got jump ability.");
                 break;
             case AbilityStar.Type.Dig:
-                // TODO
-                Debug.Log("Got jump ability.");
+                player.isAbleToDig = true;
+                Debug.Log("Got dig ability.");
                 break;
         }
     }
@@ -70,17 +70,37 @@ public sealed class GameController : MonoBehaviour
             return;
         }
 
+        if (!player.isAbleToJump && state == PlayerState.InSky)
+        {
+            return;
+        }
+
+        if (!player.isAbleToDig && state == PlayerState.InUnderground)
+        {
+            return;
+        }
+
+        int layerPlayer = LayerMask.NameToLayer("Player");
+        int layerSky = LayerMask.NameToLayer("Sky");
+        int layerGround = LayerMask.NameToLayer("Default");
+
+        Physics2D.IgnoreLayerCollision(layerPlayer, layerSky, false);
+        Physics2D.IgnoreLayerCollision(layerPlayer, layerGround, false);
+
         switch (state)
         {
             case PlayerState.OnGround:
-                player.isUnderground = false;
+                player.physicsObject.SetDimension(PhysicsObject.Dimension.Ground);
+                Physics2D.IgnoreLayerCollision(layerPlayer, layerSky, true);
                 mgr.onPlayerOnGround.Invoke();
                 break;
             case PlayerState.InUnderground:
-                player.isUnderground = true;
+                player.physicsObject.SetDimension(PhysicsObject.Dimension.Underground);
                 mgr.onPlayerUnderground.Invoke();
                 break;
             case PlayerState.InSky:
+                player.physicsObject.SetDimension(PhysicsObject.Dimension.Sky);
+                Physics2D.IgnoreLayerCollision(layerPlayer, layerGround, true);
                 mgr.onPlayerInSky.Invoke();
                 break;
         }
@@ -98,26 +118,29 @@ public sealed class GameController : MonoBehaviour
     {
         float hori = Input.GetAxis("Horizontal");
         float vert = Input.GetAxis("Vertical");
-        if (player.isGrounded && vert < 0)
+        if (player.physicsObject.isGrounded && vert < 0)
         {
             // Player wants to go underground
             SwitchPlayerState(PlayerState.InUnderground);
         }
 
         // Flip player when moving different direction.
-        if (hori < 0)
+        if (!player.joint.enabled)
         {
-            player.transform.localScale = new Vector3(1f, 1f, 1f);
-        }
-        else if (hori > 0)
-        {
-            player.transform.localScale = new Vector3(-1f, 1f, 1f);
+            if (hori < 0)
+            {
+                player.transform.localScale = new Vector3(1f, 1f, 1f);
+            }
+            else if (hori > 0)
+            {
+                player.transform.localScale = new Vector3(-1f, 1f, 1f);
+            }
         }
 
         if (playerAnim)
         {
             // Feed information to animator
-            Vector2 playerSpeed = player.rigidbody.velocity;
+            Vector2 playerSpeed = player.physicsObject.rigidbody.velocity;
             playerAnim.SetFloat("Speed_X", Mathf.Abs(Vector2.Dot(playerSpeed, player.transform.up)));
             playerAnim.SetFloat("Speed_Y", Vector2.Dot(playerSpeed, player.transform.right));
             playerAnim.SetInteger("State", State2IntMapping(currentState));
@@ -139,28 +162,67 @@ public sealed class GameController : MonoBehaviour
 
     void UpdateGround()
     {
-        player.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
-        if (player.isGrounded)
+        player.physicsObject.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
+        if (player.physicsObject.isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetButtonDown("Fire1"))
             {
-                player.velocity.y = jumpingVelocity;
+                if (player.joint.enabled)
+                {
+                    player.joint.enabled = false;
+                    //					player.joint.connectedBody.GetComponent<PhysicsObject>().enabled = false;
+                    player.joint.autoConfigureDistance = true;
+                }
+                else
+                {
+                    RaycastHit2D hit = Physics2D.Raycast(player.pivot.bounds.center, player.transform.right * -player.transform.localScale.x, player.castingRange, -1 - (1 << LayerMask.NameToLayer("Player")));
+                    Debug.DrawRay(player.pivot.bounds.center, player.transform.right * -player.transform.localScale.x, Color.red, 3f);
+                    if (hit)
+                    {
+                        PhysicsObject phyObj = hit.collider.GetComponent<PhysicsObject>();
+                        if (phyObj)
+                        {
+                            //							phyObj.enabled = true;
+                            player.joint.enabled = true;
+                            player.joint.connectedBody = phyObj.rigidbody;
+                            player.joint.autoConfigureDistance = false;
+                        }
+                    }
+                }
+                playerAnim.SetBool("Cast", player.joint.enabled);
+            }
+
+            if (player.isAbleToJump && !player.joint.enabled && Input.GetButtonDown("Jump"))
+            {
+                player.physicsObject.velocity.y = jumpingVelocity;
+                SwitchPlayerState(PlayerState.InSky);
             }
         }
         else // If player is not grounded
         {
-            SwitchPlayerState(PlayerState.InSky);
+            // SwitchPlayerState(PlayerState.InSky);
         }
+
+        ClimbLadder();
     }
 
     void UpdateSky()
     {
-        // TODO
-        player.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
-        if (player.isGrounded)
+        player.physicsObject.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
+        if (player.physicsObject.isGroundedExceptSkyblock)
         {
             SwitchPlayerState(PlayerState.OnGround);
         }
+
+        if (player.physicsObject.isGrounded)
+        {
+            if (player.isAbleToJump && !player.joint.enabled && Input.GetButtonDown("Jump"))
+            {
+                player.physicsObject.velocity.y = jumpingVelocity;
+            }
+        }
+
+        ClimbLadder();
     }
 
     void UpdateUnderground()
@@ -174,17 +236,25 @@ public sealed class GameController : MonoBehaviour
         Vector2 moveVel = player.transform.up * vert * undergroundSpeed.x + player.transform.right * hori * undergroundSpeed.y;
         float radius = psys.undergroundDepth + psys.radius;
 
-        player.rigidbody.velocity = moveVel;
+        player.physicsObject.rigidbody.velocity = moveVel;
 
         if (toCenter.magnitude > radius)
         {
             // Outside Border, pull player back.
-            player.rigidbody.MovePosition(toCenter.normalized * (radius - 0.01f));
+            player.physicsObject.rigidbody.MovePosition(toCenter.normalized * (radius - 0.01f));
         }
         else if (toCenter.magnitude < psys.radius)
         {
             // Inside
             SwitchPlayerState(PlayerState.OnGround);
+        }
+    }
+
+    void ClimbLadder()
+    {
+        if (player.isOnLadder)
+        {
+            player.physicsObject.velocity.y = movementSpeed * 3 * Input.GetAxis("Vertical") * Time.deltaTime;
         }
     }
 }

@@ -53,19 +53,27 @@ public sealed class PhysicsSystem : MonoBehaviour
     {
         foreach (var obj in physicsObjects)
         {
-            if (obj.isUnderground)
+            switch (obj.dimension)
             {
-                UpdateUnderground(obj);
-            }
-            else
-            {
-                UpdateGround(obj);
+                case PhysicsObject.Dimension.Underground:
+                    UpdateUnderground(obj);
+                    break;
+                case PhysicsObject.Dimension.Ground:
+                    UpdateGround(obj); 
+                    break;
+                case PhysicsObject.Dimension.Sky:
+                    UpdateSky(obj); 
+                    break;
             }
         }
     }
 
     void UpdateGround(PhysicsObject physicsObject)
     {
+        if (!physicsObject.enabled)
+        {
+            return;
+        }
         Rigidbody2D rigidbody = physicsObject.rigidbody;
         rigidbody.velocity = Vector2.zero;
         Vector2 direcion = (Vector2)world.position - rigidbody.position;
@@ -85,9 +93,8 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             rigidbody.position = direcion.normalized * radius;
         }
-        if (ctrler.player.isUnderground)
+        if (ctrler.player.physicsObject.isUnderground)
         {
-
             physicsObject.GetComponent<Renderer>().enabled = false;
         }
         else
@@ -116,9 +123,8 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             rigid.MovePosition(-dir * radius);
         }
-        if (ctrler.player.isUnderground)
+        if (ctrler.player.physicsObject.isUnderground)
         {
-
             physicsObject.GetComponent<Renderer>().enabled = true;
         }
         else
@@ -126,8 +132,11 @@ public sealed class PhysicsSystem : MonoBehaviour
 
             physicsObject.GetComponent<Renderer>().enabled = false;
         }
+    }
 
-
+    void UpdateSky(PhysicsObject physicsObject)
+    {
+        UpdateGround(physicsObject);
     }
 
     void OnDrawGizmos()
