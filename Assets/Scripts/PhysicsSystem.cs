@@ -42,8 +42,11 @@ public sealed class PhysicsSystem : MonoBehaviour
 
     void Start()
     {
-        mgr.DrawCircle(this.gameObject, radius, 0.1f);
-        mgr.DrawCircle(this.gameObject, radius + undergroundDepth, 0.1f);
+        if (mgr.isDebug)
+        {
+            mgr.DrawCircle(this.gameObject, radius, 0.1f, Color.red);
+            mgr.DrawCircle(this.gameObject, radius + undergroundDepth, 0.1f, Color.magenta);
+        }
     }
 
     void FixedUpdate()
@@ -82,11 +85,14 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             rigidbody.position = direcion.normalized * radius;
         }
-        if(ctrler.player.isUnderground){
-            
+        if (ctrler.player.isUnderground)
+        {
+
             physicsObject.GetComponent<Renderer>().enabled = false;
-        }else{
-            
+        }
+        else
+        {
+
             physicsObject.GetComponent<Renderer>().enabled = true;
         }
     }
@@ -110,11 +116,14 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             rigid.MovePosition(-dir * radius);
         }
-        if(ctrler.player.isUnderground){
-            
+        if (ctrler.player.isUnderground)
+        {
+
             physicsObject.GetComponent<Renderer>().enabled = true;
-        }else{
-            
+        }
+        else
+        {
+
             physicsObject.GetComponent<Renderer>().enabled = false;
         }
 
