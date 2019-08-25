@@ -102,7 +102,7 @@ public sealed class GameController : MonoBehaviour
         {
             // Feed information to animator
             Vector2 playerSpeed = player.rigidbody.velocity;
-            playerAnim.SetFloat("Speed_X", Vector2.Dot(playerSpeed, player.transform.up));
+            playerAnim.SetFloat("Speed_X", Mathf.Abs(Vector2.Dot(playerSpeed, player.transform.up)));
             playerAnim.SetFloat("Speed_Y", Vector2.Dot(playerSpeed, player.transform.right));
             playerAnim.SetInteger("State", State2IntMapping(currentState));
         }
@@ -124,9 +124,16 @@ public sealed class GameController : MonoBehaviour
     void UpdateGround()
     {
         player.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
-        if (player.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if (player.isGrounded)
         {
-            player.velocity.y = jumpingVelocity;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                player.velocity.y = jumpingVelocity;
+            }
+        }
+        else // If player is not grounded
+        {
+            SwitchPlayerState(PlayerState.InSky);
         }
     }
 
@@ -134,9 +141,9 @@ public sealed class GameController : MonoBehaviour
     {
         // TODO
         player.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
-        if (player.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if (player.isGrounded)
         {
-            player.velocity.y = jumpingVelocity;
+            SwitchPlayerState(PlayerState.OnGround);
         }
     }
 
