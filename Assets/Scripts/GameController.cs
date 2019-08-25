@@ -22,7 +22,7 @@ public sealed class GameController : MonoBehaviour
     public float movementSpeed = 2f;
     public Vector2 undergroundSpeed = new Vector2(3f, 4f);
     public float jumpingVelocity = 0.5f;
-    public PhysicsObject player;
+	public Player player;
 
     Animator playerAnim = null;
 
@@ -58,11 +58,11 @@ public sealed class GameController : MonoBehaviour
         switch (state)
         {
             case PlayerState.OnGround:
-                player.isUnderground = false;
+                player.physicsObject.isUnderground = false;
                 mgr.onPlayerOnGround.Invoke();
                 break;
             case PlayerState.InUnderground:
-                player.isUnderground = true;
+                player.physicsObject.isUnderground = true;
                 mgr.onPlayerUnderground.Invoke();
                 break;
             case PlayerState.InSky:
@@ -83,26 +83,28 @@ public sealed class GameController : MonoBehaviour
     {
         float hori = Input.GetAxis("Horizontal");
         float vert = Input.GetAxis("Vertical");
-        if (player.isGrounded && vert < 0)
+		if (player.physicsObject.isGrounded && vert < 0)
         {
             // Player wants to go underground
             SwitchPlayerState(PlayerState.InUnderground);
         }
 
         // Flip player when moving different direction.
-        if (hori < 0)
-        {
-            player.transform.localScale = new Vector3(1f, 1f, 1f);
-        }
-        else if (hori > 0)
-        {
-            player.transform.localScale = new Vector3(-1f, 1f, 1f);
-        }
+		if (!player.joint.enabled) {
+			if (hori < 0)
+			{
+				player.transform.localScale = new Vector3(1f, 1f, 1f);
+			}
+			else if (hori > 0)
+			{
+				player.transform.localScale = new Vector3(-1f, 1f, 1f);
+			}
+		}
 
         if (playerAnim)
         {
             // Feed information to animator
-            Vector2 playerSpeed = player.rigidbody.velocity;
+			Vector2 playerSpeed = player.physicsObject.rigidbody.velocity;
             playerAnim.SetFloat("Speed_X", Mathf.Abs(Vector2.Dot(playerSpeed, player.transform.up)));
             playerAnim.SetFloat("Speed_Y", Vector2.Dot(playerSpeed, player.transform.right));
             playerAnim.SetInteger("State", State2IntMapping(currentState));
@@ -124,13 +126,32 @@ public sealed class GameController : MonoBehaviour
 
     void UpdateGround()
     {
-        player.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
-        if (player.isGrounded)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
+		player.physicsObject.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
+		if (player.physicsObject.isGrounded)
+		{
+			
+			if (Input.GetButtonDown("Fire1")) {
+				if (player.joint.enabled) {
+					player.joint.enabled = false;
+					player.joint.autoConfigureDistance = true;
+				} else {
+					RaycastHit2D hit = Physics2D.Raycast(player.pivot.bounds.center, player.transform.right * -player.transform.localScale.x, 2f);
+					if (hit) {
+						PhysicsObject phyObj = hit.collider.GetComponent<PhysicsObject>();
+						if (phyObj) {
+							player.joint.enabled = true;
+							player.joint.connectedBody = phyObj.rigidbody;
+							player.joint.autoConfigureDistance = false;
+						}
+					}
+				}
+				playerAnim.SetBool("Cast", player.joint.enabled);
+			}
+
+			if (!player.joint.enabled && Input.GetButtonDown("Jump"))
             {
-                player.velocity.y = jumpingVelocity;
-            }
+				player.physicsObject.velocity.y = jumpingVelocity;
+			}
         }
         else // If player is not grounded
         {
@@ -141,8 +162,8 @@ public sealed class GameController : MonoBehaviour
     void UpdateSky()
     {
         // TODO
-        player.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
-        if (player.isGrounded)
+		player.physicsObject.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
+		if (player.physicsObject.isGrounded)
         {
             SwitchPlayerState(PlayerState.OnGround);
         }
@@ -159,12 +180,12 @@ public sealed class GameController : MonoBehaviour
         Vector2 moveVel = player.transform.up * vert * undergroundSpeed.x + player.transform.right * hori * undergroundSpeed.y;
         float radius = psys.undergroundDepth + psys.radius;
 
-        player.rigidbody.velocity = moveVel;
+		player.physicsObject.rigidbody.velocity = moveVel;
 
         if (toCenter.magnitude > radius)
         {
             // Outside Border, pull player back.
-            player.rigidbody.MovePosition(toCenter.normalized * (radius - 0.01f));
+			player.physicsObject.rigidbody.MovePosition(toCenter.normalized * (radius - 0.01f));
         }
         else if (toCenter.magnitude < psys.radius)
         {
