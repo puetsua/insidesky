@@ -324,7 +324,7 @@ GameObject:
   - component: {fileID: 151132524}
   m_Layer: 0
   m_Name: 4_240_Obs0
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -461,7 +461,7 @@ GameObject:
   - component: {fileID: 167102693}
   m_Layer: 0
   m_Name: 0_d24_Obs0
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -660,7 +660,7 @@ GameObject:
   - component: {fileID: 287942222}
   m_Layer: 0
   m_Name: 4_240_Obs0
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -797,7 +797,7 @@ GameObject:
   - component: {fileID: 325708149}
   m_Layer: 11
   m_Name: 3_204_Obs0
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1046,7 +1046,7 @@ GameObject:
   - component: {fileID: 367013784}
   m_Layer: 0
   m_Name: 1_78_Obs1
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1346,7 +1346,7 @@ GameObject:
   - component: {fileID: 370484244}
   m_Layer: 11
   m_Name: New Sprite
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2078,7 +2078,7 @@ GameObject:
   - component: {fileID: 459260253}
   m_Layer: 11
   m_Name: 0_6_Climb0
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2314,7 +2314,7 @@ GameObject:
   - component: {fileID: 481607481}
   m_Layer: 11
   m_Name: 4_222_Obs0
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2420,7 +2420,7 @@ GameObject:
   - component: {fileID: 520109140}
   m_Layer: 0
   m_Name: 4_216_Obs0
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2698,7 +2698,7 @@ GameObject:
   - component: {fileID: 621454992}
   m_Layer: 0
   m_Name: 0_0_Obs0
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3295,7 +3295,7 @@ GameObject:
   - component: {fileID: 848453258}
   m_Layer: 0
   m_Name: 0_24_Obs0
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3494,7 +3494,7 @@ GameObject:
   - component: {fileID: 888673909}
   m_Layer: 11
   m_Name: 5_348_Obs0
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3710,7 +3710,7 @@ GameObject:
   - component: {fileID: 908536507}
   m_Layer: 0
   m_Name: 3_156_Obs0
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3932,6 +3932,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  onJumpGet:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onDigGet:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onWinning:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!4 &945225850
 Transform:
   m_ObjectHideFlags: 0
@@ -3993,7 +4008,7 @@ GameObject:
   - component: {fileID: 951207254}
   m_Layer: 11
   m_Name: 4_240_Obs0
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4394,7 +4409,7 @@ GameObject:
   - component: {fileID: 1053685102}
   m_Layer: 11
   m_Name: 3_168_Climb0
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4500,7 +4515,7 @@ GameObject:
   - component: {fileID: 1061233687}
   m_Layer: 0
   m_Name: 4_264_Obs0
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4606,7 +4621,7 @@ GameObject:
   - component: {fileID: 1098407883}
   m_Layer: 11
   m_Name: 0_d6_Obs0
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4781,7 +4796,7 @@ GameObject:
   - component: {fileID: 1120819958}
   m_Layer: 0
   m_Name: New Sprite
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5103,7 +5118,7 @@ GameObject:
   - component: {fileID: 1155865583}
   m_Layer: 11
   m_Name: 3_180_Obs0
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5240,7 +5255,7 @@ GameObject:
   - component: {fileID: 1196908827}
   m_Layer: 11
   m_Name: 0_18_Obs0
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5379,7 +5394,7 @@ GameObject:
   - component: {fileID: 1265872196}
   m_Layer: 11
   m_Name: 0_d24_Obs0
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6330,7 +6345,7 @@ GameObject:
   - component: {fileID: 1519140192}
   m_Layer: 0
   m_Name: 4_222_Obs0
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6810,7 +6825,7 @@ GameObject:
   - component: {fileID: 1667585923}
   m_Layer: 0
   m_Name: 1_78_Obs0
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7338,7 +7353,7 @@ GameObject:
   - component: {fileID: 1736962550}
   m_Layer: 0
   m_Name: 3_204_Obs0
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7649,7 +7664,7 @@ GameObject:
   - component: {fileID: 1762737150}
   m_Layer: 11
   m_Name: 4_264_Obs0
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7834,7 +7849,7 @@ GameObject:
   - component: {fileID: 1792191098}
   m_Layer: 0
   m_Name: 5_348_Obs0
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8541,7 +8556,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1863354117
 Transform:
   m_ObjectHideFlags: 0
@@ -8724,7 +8739,7 @@ GameObject:
   - component: {fileID: 1979388727}
   m_Layer: 0
   m_Name: New Sprite
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8861,7 +8876,7 @@ GameObject:
   - component: {fileID: 2012110831}
   m_Layer: 0
   m_Name: New Sprite
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8967,7 +8982,7 @@ GameObject:
   - component: {fileID: 2037615248}
   m_Layer: 11
   m_Name: New Sprite
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9327,7 +9342,7 @@ GameObject:
   - component: {fileID: 2090634045}
   m_Layer: 11
   m_Name: 4_240_Obs0
-  m_TagString: Untagged
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

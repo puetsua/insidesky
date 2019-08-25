@@ -74,6 +74,40 @@ public sealed class GameManager : MonoBehaviour
         {
             DrawCircle(this.gameObject, winRadius, 0.1f, Color.yellow);
         }
+
+        onPlayerOnGround.AddListener(() =>
+        {
+            GameObject[] groundObjs = GameObject.FindGameObjectsWithTag("Ground");
+            GameObject[] skyObjs = GameObject.FindGameObjectsWithTag("Sky");
+            foreach (var obj in groundObjs)
+            {
+                obj.GetComponent<Renderer>().enabled = true;
+            }
+            foreach (var obj in skyObjs)
+            {
+                obj.GetComponent<Renderer>().enabled = false;
+            }
+        });
+        onPlayerInSky.AddListener(() =>
+        {
+            GameObject[] groundObjs = GameObject.FindGameObjectsWithTag("Ground");
+            GameObject[] skyObjs = GameObject.FindGameObjectsWithTag("Sky");
+            foreach (var obj in groundObjs)
+            {
+                obj.GetComponent<Renderer>().enabled = false;
+            }
+            foreach (var obj in skyObjs)
+            {
+                obj.GetComponent<Renderer>().enabled = true;
+            }
+        });
+
+        // Ground, hide sky.
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Sky");
+        foreach (var obj in objs)
+        {
+            obj.GetComponent<Renderer>().enabled = false;
+        }
     }
 
     void Update()
