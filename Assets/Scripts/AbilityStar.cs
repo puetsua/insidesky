@@ -15,8 +15,8 @@ public class AbilityStar : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        PhysicsObject obj = other.gameObject.GetComponent<PhysicsObject>();
-        if (gameCtrl.player == obj)
+        Player player = other.gameObject.GetComponent<Player>();
+        if (player)
         {
             gameCtrl.PlayerGotAbility(type);
             Destroy(this.gameObject);
