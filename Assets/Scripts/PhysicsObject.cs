@@ -20,6 +20,8 @@ public sealed class PhysicsObject : MonoBehaviour
     public bool isInSky { get { return dimension == Dimension.Sky; } }
 
 #if UNITY_EDITOR
+	void OnEnable() {}
+
     new
 #endif
     public Rigidbody2D rigidbody
