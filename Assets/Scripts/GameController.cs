@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 [DisallowMultipleComponent]
 public sealed class GameController : MonoBehaviour
@@ -20,7 +21,42 @@ public sealed class GameController : MonoBehaviour
     public float movementSpeed = 2f;
     public float jumpingVelocity = 0.5f;
     public PhysicsObject player;
-    public bool isGrounded;
+    public UnityEvent onPlayerInSky = new UnityEvent();
+    public UnityEvent onPlayerOnGround = new UnityEvent();
+    public UnityEvent onPlayerUnderground = new UnityEvent();
+
+    enum PlayerState
+    {
+        OnGround,
+        InUnderground,
+        InSky
+    }
+    PlayerState currentState = PlayerState.OnGround;
+
+    void SwitchPlayerState(PlayerState state)
+    {
+        if (currentState == state)
+        {
+            return;
+        }
+
+        switch (state)
+        {
+            case PlayerState.OnGround:
+                player.isUnderground = false;
+                onPlayerOnGround.Invoke();
+                break;
+            case PlayerState.InUnderground:
+                player.isUnderground = true;
+                onPlayerUnderground.Invoke();
+                break;
+            case PlayerState.InSky:
+                onPlayerInSky.Invoke();
+                break;
+        }
+
+        currentState = state;
+    }
 
     void Update()
     {
@@ -28,16 +64,20 @@ public sealed class GameController : MonoBehaviour
         if (player.isGrounded && vert < 0)
         {
             // Player wants to go underground
-            player.isUnderground = true;
+            SwitchPlayerState(PlayerState.InUnderground);
         }
 
-        if (player.isUnderground)
+        switch (currentState)
         {
-            UpdateUnderground();
-        }
-        else
-        {
-            UpdateGround();
+            case PlayerState.OnGround:
+                UpdateGround();
+                break;
+            case PlayerState.InUnderground:
+                UpdateUnderground();
+                break;
+            case PlayerState.InSky:
+                UpdateSky();
+                break;
         }
     }
 
@@ -48,7 +88,16 @@ public sealed class GameController : MonoBehaviour
         {
             player.velocity.y = jumpingVelocity;
         }
-        isGrounded = player.isGrounded;
+    }
+
+    void UpdateSky()
+    {
+        // TODO
+        player.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
+        if (player.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            player.velocity.y = jumpingVelocity;
+        }
     }
 
     void UpdateUnderground()
@@ -70,7 +119,7 @@ public sealed class GameController : MonoBehaviour
         else if (distance.magnitude < psys.radius)
         {
             // Inside
-            player.isUnderground = false;
+            SwitchPlayerState(PlayerState.OnGround);
         }
     }
 }
