@@ -3913,7 +3913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe312dbd08352d840bb939ea51e29bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebug: 1
+  isDebug: 0
   debugLineRenderer: {fileID: 820617145978772777, guid: 0772f5dfafaf040489b5c0b07c3d2689,
     type: 3}
   winRadius: 2
