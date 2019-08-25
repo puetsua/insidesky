@@ -34,6 +34,21 @@ public sealed class GameController : MonoBehaviour
     }
     PlayerState currentState = PlayerState.OnGround;
 
+    public void PlayerGotAbility(AbilityStar.Type type)
+    {
+        switch (type)
+        {
+            case AbilityStar.Type.Jump:
+                // TODO
+                Debug.Log("Got jump ability.");
+                break;
+            case AbilityStar.Type.Dig:
+                // TODO
+                Debug.Log("Got jump ability.");
+                break;
+        }
+    }
+
     int State2IntMapping(PlayerState state)
     {
         switch (state)
