@@ -28,7 +28,7 @@ public class MusicController : MonoBehaviour, IMusicController
     GameManager mgr { get { return GameManager.instance; } }
 
     [SerializeField]
-    AudioClip[] musicClips;
+    AudioClip[] musicClips = new AudioClip[0];
     [SerializeField, Range(0.01f, 2f)]
     float trainsitionSpeed = 1;
 
