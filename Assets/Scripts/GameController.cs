@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 [DisallowMultipleComponent]
 public sealed class GameController : MonoBehaviour
@@ -16,29 +17,107 @@ public sealed class GameController : MonoBehaviour
     }
     static GameController m_instance = null;
 
+    GameManager mgr { get { return GameManager.instance; } }
     PhysicsSystem psys { get { return PhysicsSystem.instance; } }
     public float movementSpeed = 2f;
     public float jumpingVelocity = 0.5f;
     public PhysicsObject player;
-    public bool isGrounded;
-    public bool isUnderWorldDisplay = false;
+
+    Animator playerAnim = null;
+
+    enum PlayerState
+    {
+        OnGround,
+        InUnderground,
+        InSky
+    }
+    PlayerState currentState = PlayerState.OnGround;
+
+    int State2IntMapping(PlayerState state)
+    {
+        switch (state)
+        {
+            case PlayerState.InUnderground:
+                return 0;
+            case PlayerState.OnGround:
+                return 1;
+            case PlayerState.InSky:
+                return 2;
+        }
+        return -1;
+    }
+
+    void SwitchPlayerState(PlayerState state)
+    {
+        if (currentState == state)
+        {
+            return;
+        }
+
+        switch (state)
+        {
+            case PlayerState.OnGround:
+                player.isUnderground = false;
+                mgr.onPlayerOnGround.Invoke();
+                break;
+            case PlayerState.InUnderground:
+                player.isUnderground = true;
+                mgr.onPlayerUnderground.Invoke();
+                break;
+            case PlayerState.InSky:
+                mgr.onPlayerInSky.Invoke();
+                break;
+        }
+
+        currentState = state;
+        Debug.LogFormat("Changed state to {0}", currentState);
+    }
+
+    void Start()
+    {
+        playerAnim = player.GetComponent<Animator>();
+    }
 
     void Update()
     {
+        float hori = Input.GetAxis("Horizontal");
         float vert = Input.GetAxis("Vertical");
         if (player.isGrounded && vert < 0)
         {
             // Player wants to go underground
-            player.isUnderground = true;
+            SwitchPlayerState(PlayerState.InUnderground);
         }
 
-        if (player.isUnderground)
+        // Flip player when moving different direction.
+        if (hori < 0)
         {
-            UpdateUnderground();
+            player.transform.localScale = new Vector3(1f, 1f, 1f);
         }
-        else
+        else if (hori > 0)
         {
-            UpdateGround();
+            player.transform.localScale = new Vector3(-1f, 1f, 1f);
+        }
+
+        if (playerAnim)
+        {
+            // Feed information to animator
+            Vector2 playerSpeed = player.rigidbody.velocity;
+            playerAnim.SetFloat("Speed_X", Vector2.Dot(playerSpeed, player.transform.up));
+            playerAnim.SetFloat("Speed_Y", Vector2.Dot(playerSpeed, player.transform.right));
+            playerAnim.SetInteger("State", State2IntMapping(currentState));
+        }
+
+        switch (currentState)
+        {
+            case PlayerState.OnGround:
+                UpdateGround();
+                break;
+            case PlayerState.InUnderground:
+                UpdateUnderground();
+                break;
+            case PlayerState.InSky:
+                UpdateSky();
+                break;
         }
     }
 
@@ -49,7 +128,16 @@ public sealed class GameController : MonoBehaviour
         {
             player.velocity.y = jumpingVelocity;
         }
-        isGrounded = player.isGrounded;
+    }
+
+    void UpdateSky()
+    {
+        // TODO
+        player.velocity.x = Input.GetAxis("Horizontal") * movementSpeed;
+        if (player.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            player.velocity.y = jumpingVelocity;
+        }
     }
 
     void UpdateUnderground()
@@ -71,24 +159,7 @@ public sealed class GameController : MonoBehaviour
         else if (distance.magnitude < psys.radius)
         {
             // Inside
-            player.isUnderground = false;
-            /* 
-            if(!isUnderWorldDisplay)
-            {
-                
-                
-                PhysicsObject[] objs = Resources.FindObjectsOfTypeAll<PhysicsObject>();
-                for (int i = 0; i < objs.Length; ++i)
-                {
-                    if(objs)
-                        objs[i].gameObject.SetActive(false);
-                        Debug.Log("objs "+objs.Length);
-                }
-            }
-            */
-                
-        }else{
-
+            SwitchPlayerState(PlayerState.OnGround);
         }
     }
 }
