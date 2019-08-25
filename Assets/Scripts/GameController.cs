@@ -20,6 +20,7 @@ public sealed class GameController : MonoBehaviour
     GameManager mgr { get { return GameManager.instance; } }
     PhysicsSystem psys { get { return PhysicsSystem.instance; } }
     public float movementSpeed = 2f;
+    public Vector2 undergroundSpeed = new Vector2(3f, 4f);
     public float jumpingVelocity = 0.5f;
     public PhysicsObject player;
 
@@ -151,19 +152,21 @@ public sealed class GameController : MonoBehaviour
     {
         float hori = Input.GetAxis("Horizontal");
         float vert = Input.GetAxis("Vertical");
-        Vector2 distance = (Vector2)player.transform.position;
+
+        Vector2 toCenter = player.transform.position - psys.world.position;
+        player.transform.up = -toCenter;
+
+        Vector2 moveVel = player.transform.up * vert * undergroundSpeed.x + player.transform.right * hori * undergroundSpeed.y;
         float radius = psys.undergroundDepth + psys.radius;
 
-        player.transform.Translate(new Vector2(hori, vert) * movementSpeed * Time.deltaTime);
-        player.transform.up = -distance;
+        player.rigidbody.velocity = moveVel;
 
-        if (distance.magnitude > radius)
+        if (toCenter.magnitude > radius)
         {
-            // Outside Border
-            player.transform.position = (Vector2)distance.normalized * radius;
-            player.transform.Translate(new Vector2(hori, 0) * movementSpeed * Time.deltaTime);
+            // Outside Border, pull player back.
+            player.rigidbody.MovePosition(toCenter.normalized * (radius - 0.01f));
         }
-        else if (distance.magnitude < psys.radius)
+        else if (toCenter.magnitude < psys.radius)
         {
             // Inside
             SwitchPlayerState(PlayerState.OnGround);
