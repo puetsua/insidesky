@@ -12,6 +12,8 @@ public sealed class PhysicsObject : MonoBehaviour
     public bool isUnderground = false;
 
 #if UNITY_EDITOR
+	void OnEnable() {}
+
     new
 #endif
     public Rigidbody2D rigidbody

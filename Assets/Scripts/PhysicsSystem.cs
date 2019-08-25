@@ -66,6 +66,9 @@ public sealed class PhysicsSystem : MonoBehaviour
 
     void UpdateGround(PhysicsObject physicsObject)
     {
+		if (!physicsObject.enabled) {
+			return;
+		}
         Rigidbody2D rigidbody = physicsObject.rigidbody;
         rigidbody.velocity = Vector2.zero;
         Vector2 direcion = (Vector2)world.position - rigidbody.position;
@@ -85,9 +88,7 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             rigidbody.position = direcion.normalized * radius;
         }
-        if (ctrler.player.isUnderground)
-        {
-
+		if(ctrler.player.physicsObject.isUnderground){
             physicsObject.GetComponent<Renderer>().enabled = false;
         }
         else
@@ -116,9 +117,7 @@ public sealed class PhysicsSystem : MonoBehaviour
         {
             rigid.MovePosition(-dir * radius);
         }
-        if (ctrler.player.isUnderground)
-        {
-
+		if(ctrler.player.physicsObject.isUnderground){
             physicsObject.GetComponent<Renderer>().enabled = true;
         }
         else
